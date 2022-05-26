@@ -8,7 +8,7 @@ const transmision = document.querySelector('#transmision');
 const color = document.querySelector('#color');
 
 //Contenedor para los resultados (div con id resultado)
-const resultados = document.querySelector('#resultado');
+const resultado = document.querySelector('#resultado');
 
 //variables para los option de años
 const max = new Date().getFullYear(); //toma el año usando la fecha actual
@@ -29,7 +29,7 @@ const datosBusqueda = {
 //Eventos
 document.addEventListener('DOMContentLoaded', () => {
     //Muestra los datos de autos al cargar (array de objetos) 
-    mostrarAutos();
+    mostrarAutos(autos);
     //LLena las opciones de años
     llenarSelect();
 })
@@ -48,10 +48,12 @@ year.addEventListener('change', e => {
 
 minimo.addEventListener('change', e => {
     datosBusqueda.minimo = e.target.value;
+    filtrarAuto();
 })
 
 maximo.addEventListener('change', e => {
     datosBusqueda.maximo = e.target.value;
+    filtrarAuto();
 })
 
 puertas.addEventListener('change', e => {
@@ -70,7 +72,8 @@ color.addEventListener('change', e => {
 
 
 //Funciones
-function mostrarAutos() {
+function mostrarAutos(autos) {
+    limpiarHTML(); //limpia el HTML, se pone primero
     //Iterar el array de objetos donde están los datos
     autos.forEach( auto => {
         //destructuring para simplificar
@@ -88,10 +91,18 @@ function mostrarAutos() {
         `;
 
         //Insertar en el HTML
-        resultados.appendChild(autoHTML);
+        resultado.appendChild(autoHTML);
     });
 }
 
+// limpiar el HTML
+function limpiarHTML() {
+    //Mientras resultado (que es donde se pinta el HTML) tenga algo
+    // que borre lo que este previamente
+    while (resultado.firstChild) {
+        resultado.removeChild(resultado.firstChild);
+    }
+}
 // Genera los años del select
 
 function llenarSelect() {
@@ -106,8 +117,11 @@ function llenarSelect() {
 //Función que filtra en base a la búsqueda
 
 function filtrarAuto () {
-    const resultado = autos.filter( filtrarMarca).filter( filtrarYear);
-    console.log(resultado);
+    //autos es el array de objetos que contiene los datos en db.js
+    const resultado = autos.filter( filtrarMarca).filter( filtrarYear).filter(filtrarMinimo).filter(filtrarMaximo);
+    //console.log(resultado);
+    //llama a la función mostrarAutos pero con la variable resultado como parámetro
+    mostrarAutos(resultado);
 }
 
 function filtrarMarca(auto) {
@@ -125,3 +139,19 @@ function filtrarYear(auto) {
     }
     return auto;
 }
+
+function filtrarMinimo(auto) {
+    const {minimo} = datosBusqueda;
+    if ( minimo ) {
+        return auto.precio >= minimo;
+    }
+    return auto;
+}
+
+function filtrarMaximo(auto) {
+    const {maximo} = datosBusqueda;
+    if ( maximo ) {
+        return auto.precio <= maximo;
+    }
+    return auto;
+}    
