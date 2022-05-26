@@ -1,4 +1,4 @@
-// Variables
+// Variables que referencian los elementos select 
 const marca = document.querySelector('#marca');
 const year = document.querySelector('#year');
 const minimo = document.querySelector('#minimo');
@@ -7,14 +7,14 @@ const puertas = document.querySelector('#puertas');
 const transmision = document.querySelector('#transmision');
 const color = document.querySelector('#color');
 
-//Contenedor para los resultados
+//Contenedor para los resultados (div con id resultado)
 const resultados = document.querySelector('#resultado');
 
 //variables para los option de años
 const max = new Date().getFullYear(); //toma el año usando la fecha actual
 const min = max - 10;
 
-//Genera un objeto con la busqueda
+//Genera un objeto con la búsqueda
 const datosBusqueda = {
     marca : '',
     year : '',
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     llenarSelect();
 })
 
-//eventListener para los input del formulario de busqueda
+//eventListener para los input del formulario de búsqueda
 
 marca.addEventListener('change', e => {
     datosBusqueda.marca = e.target.value;
@@ -70,7 +70,7 @@ color.addEventListener('change', e => {
 
 //Funciones
 function mostrarAutos() {
-    //Iterar el array de objetos donde estan los datos
+    //Iterar el array de objetos donde están los datos
     autos.forEach( auto => {
         //destructuring para simplificar
         const { marca, modelo, year, precio, puertas, color, transmision} = auto;
@@ -102,7 +102,7 @@ function llenarSelect() {
     }
 }
 
-//Función que filtra en base a la busqueda
+//Función que filtra en base a la búsqueda
 
 function filtrarAuto () {
     const resultado = autos.filter( filtrarMarca);
