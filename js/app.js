@@ -42,7 +42,8 @@ marca.addEventListener('change', e => {
 })
 
 year.addEventListener('change', e => {
-    datosBusqueda.year = e.target.value;
+    datosBusqueda.year = parseInt(e.target.value); //el filtrado del formulario devuelve los numeros como string hay que parsearlo para convertirlo a numero 
+    filtrarAuto();
 })
 
 minimo.addEventListener('change', e => {
@@ -63,7 +64,7 @@ transmision.addEventListener('change', e => {
 
 color.addEventListener('change', e => {
     datosBusqueda.color = e.target.value;
-    console.log(datosBusqueda);
+    
 })
 
 
@@ -87,7 +88,7 @@ function mostrarAutos() {
         `;
 
         //Insertar en el HTML
-        resultado.appendChild(autoHTML);
+        resultados.appendChild(autoHTML);
     });
 }
 
@@ -105,14 +106,22 @@ function llenarSelect() {
 //Función que filtra en base a la búsqueda
 
 function filtrarAuto () {
-    const resultado = autos.filter( filtrarMarca);
-
+    const resultado = autos.filter( filtrarMarca).filter( filtrarYear);
+    console.log(resultado);
 }
 
 function filtrarMarca(auto) {
     const {marca} = datosBusqueda;
     if ( marca ) {
         return auto.marca === marca;
+    }
+    return auto;
+}
+
+function filtrarYear(auto) {
+    const {year} = datosBusqueda;
+    if ( year ) {
+        return auto.year === year;
     }
     return auto;
 }
