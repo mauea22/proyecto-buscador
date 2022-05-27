@@ -121,9 +121,24 @@ function llenarSelect() {
 function filtrarAuto () {
     //autos es el array de objetos que contiene los datos en db.js
     const resultado = autos.filter( filtrarMarca).filter( filtrarYear).filter(filtrarMinimo).filter(filtrarMaximo).filter(filtrarPuertas).filter(filtrarTransmision).filter(filtrarColor);
-    //console.log(resultado);
-    //llama a la función mostrarAutos pero con la variable resultado como parámetro
-    mostrarAutos(resultado);
+    
+    if (resultado.length) {
+        //llama a la función mostrarAutos pero con la variable resultado como parámetro
+        mostrarAutos(resultado);
+    } else {
+        noResultado();
+    }    
+}
+
+function noResultado() {
+    // Primero limpiar el HTML
+    limpiarHTML();
+
+    //Mostrar mensaje de error en el HTML
+    const noResultado = document.createElement('div');
+    noResultado.classList.add('alerta', 'error');
+    noResultado.textContent = 'No hay resultado para esta búsqueda, intente con otros filtros';
+    resultado.appendChild(noResultado);
 }
 
 function filtrarMarca(auto) {
